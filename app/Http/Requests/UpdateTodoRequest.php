@@ -3,7 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 
 
 class UpdateTodoRequest extends FormRequest
@@ -15,7 +17,7 @@ class UpdateTodoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,9 +28,7 @@ class UpdateTodoRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'max:255', Rule::unique('todos')->where(function ($q) {
-                $q->where('date', $this->date);
-            })],
+            'title' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
         ];
     }

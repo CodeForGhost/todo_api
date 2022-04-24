@@ -25,5 +25,4 @@ class TodoService
         $todo->save();
         return $todo;
     }
-    
 }
