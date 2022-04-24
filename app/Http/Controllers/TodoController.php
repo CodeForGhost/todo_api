@@ -6,6 +6,7 @@ use App\Models\Todo;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Http\Resources\TodoResource;
+use App\Services\TodoService;
 
 class TodoController extends Controller
 {
@@ -19,15 +20,6 @@ class TodoController extends Controller
         return TodoResource::collection(Todo::list());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -42,7 +34,7 @@ class TodoController extends Controller
             'date' => $request->date
         ];
 
-        return new TodoResource();
+        return new TodoResource(TodoService::store($todo));
     }
 
     /**
@@ -52,19 +44,8 @@ class TodoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Todo $todo)
-    {   
-        return new TodoResource($todo);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Todo $todo)
     {
-        //
+        return new TodoResource($todo);
     }
 
     /**
@@ -80,6 +61,8 @@ class TodoController extends Controller
             'title' => $request->title,
             'date' => $request->date
         ];
+
+        return new TodoResource(TodoService::update($todo, $data));
     }
 
     /**
